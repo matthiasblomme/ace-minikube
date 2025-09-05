@@ -1,0 +1,10 @@
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  template:
+    spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1001

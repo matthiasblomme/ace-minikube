@@ -1,0 +1,22 @@
+namespace: "ace-demo"
+operator:
+  env: {}
+  replicas: 1
+  deployment:
+    repository: icr.io/cpopen
+    image: appconnect-operator
+    tag: 12.14.0
+    pullPolicy: Always
+    resources:
+      requests:
+        cpu: "100m"
+        memory: 128Mi
+        ephemeral-storage: 50Mi
+      limits:
+        cpu: "250m"
+        memory: 1Gi
+        ephemeral-storage: 512Mi
+  installMode: OwnNamespace
+  imagePullSecrets:
+    - ibm-entitlement-key
+  privateRegistry: ""

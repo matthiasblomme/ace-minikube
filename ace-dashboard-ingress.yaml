@@ -1,0 +1,34 @@
+# ace-dashboard-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ace-dashboard-ingress
+  namespace: ace-demo
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/proxy-ssl-verify: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+      - ace-dash.local
+    secretName: ace-dashboard-tls    # cert-manager creates this Secret
+  rules:
+  - host: ace-dash.local
+    http:
+      paths:
+      - path: /apiv2
+        pathType: Prefix
+        backend:
+          service:
+            name: ace-dashboard-dash
+            port:
+              number: 8300   # UI port; UI proxies /apiv2 to API
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ace-dashboard-dash
+            port:
+              number: 8300   # UI port

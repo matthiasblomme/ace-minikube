@@ -1,0 +1,42 @@
+apiVersion: appconnect.ibm.com/v1beta1
+kind: Dashboard
+metadata:
+  name: ace-dashboard
+  namespace: ace-demo
+spec:
+  license:
+    accept: true
+    license: L-KPRV-AUG9NC
+    use: AppConnectEnterpriseNonProductionFREE
+  pod:
+    containers:
+      content-server:
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      control-ui:
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 125Mi
+  switchServer:
+    name: default
+  authentication:
+    integrationKeycloak:
+      enabled: false
+  authorization:
+    integrationKeycloak:
+      enabled: false
+  api:
+    enabled: true
+  storage:
+    type: persistent-claim
+    claimName: ace-dashboard-content
+  displayMode: IntegrationRuntimes
+  replicas: 1
+  version: '13.0'

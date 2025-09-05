@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ace-dashboard-tls
+  namespace: ace-demo
+spec:
+  secretName: ace-dashboard-tls
+  issuerRef:
+    kind: ClusterIssuer
+    name: selfsigned-issuer   # or your CA
+  dnsNames:
+    - ace-dashboard.local

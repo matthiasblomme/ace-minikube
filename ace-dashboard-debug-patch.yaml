@@ -1,0 +1,12 @@
+spec:
+  pod:
+    containers:
+      control-ui:
+        image: "cp.icr.io/cp/appc/acecc-dashboard-prod:TS019983934-debug-20250901-160233"
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 125Mi
+  logLevel: debug
