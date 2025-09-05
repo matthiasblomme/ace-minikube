@@ -1,2 +1,4 @@
 spec:
-  logLevel: debug
+  logLevel: debug     # Sets the logging verbosity level for the component
+    # Options typically include: debug, info, warn, error
+  # 'debug' provides maximum detail, useful for troubleshooting

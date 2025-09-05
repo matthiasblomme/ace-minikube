@@ -1,12 +1,12 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
+apiVersion: v1                         # Core API group for Kubernetes storage resources
+kind: PersistentVolumeClaim            # Defines a request for persistent storage
 metadata:
-  name: ace-dashboard-content
-  namespace: ace-demo
+  name: ace-dashboard-content          # Name of the PVC (referenced by pods or custom resources)
+  namespace: ace-demo                  # Namespace where the PVC is created
 spec:
-  storageClassName: standard
+  storageClassName: standard           # StorageClass to use (provisions dynamic volumes if available)
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteOnce                    # Volume can be mounted read-write by a single node at a time
   resources:
     requests:
-      storage: 5Gi
+      storage: 5Gi                     # Requested storage capacity (5 gigabytes)

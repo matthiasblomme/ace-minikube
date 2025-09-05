@@ -1,13 +1,13 @@
-apiVersion: operators.coreos.com/v1alpha1
-kind: CatalogSource
+apiVersion: operators.coreos.com/v1alpha1   # API group and version that defines the CatalogSource resource
+kind: CatalogSource                        # The type of Kubernetes resource, in this case a CatalogSource
 metadata:
-  name: ibm-operator-catalog
-  namespace: olm
+  name: ibm-operator-catalog               # The name of the CatalogSource (must be unique in the namespace)
+  namespace: olm                           # Namespace where the Operator Lifecycle Manager (OLM) runs (commonly 'olm' or 'openshift-marketplace')
 spec:
-  displayName: IBM Operator Catalog
-  publisher: IBM
-  sourceType: grpc
-  image: icr.io/cpopen/ibm-operator-catalog:latest  # public, no entitlement needed
-  updateStrategy:
-    registryPoll:
-      interval: 30m
+  displayName: IBM Operator Catalog        # A human-readable display name for this catalog, shown in UIs
+  publisher: IBM                           # Name of the publisher (shown in UIs to identify source ownership)
+  sourceType: grpc                         # Type of source; 'grpc' means it connects to a container image serving a gRPC catalog
+  image: icr.io/cpopen/ibm-operator-catalog:latest   # Container image hosting the operator catalog index (public, no entitlement needed)
+  updateStrategy:                          # Strategy for how OLM keeps the catalog source updated
+    registryPoll:                          # Defines registry polling settings
+      interval: 30m                        # Frequency (every 30 minutes) at which OLM polls the catalog image for updates

@@ -1,22 +1,23 @@
-namespace: "ace-demo"
+namespace: "ace-demo"                  # Namespace where the ACE Operator will be deployed
+
 operator:
-  env: {}
-  replicas: 1
+  env: {}                              # Environment variables for the operator container (empty here)
+  replicas: 1                          # Number of operator replicas (usually 1 unless HA is needed)
   deployment:
-    repository: icr.io/cpopen
-    image: appconnect-operator
-    tag: 12.14.0
-    pullPolicy: Always
-    resources:
+    repository: icr.io/cpopen          # Image registry/repository (IBM Cloud Container Registry open catalog)
+    image: appconnect-operator         # Operator image name
+    tag: 12.14.0                       # Specific operator version tag to deploy
+    pullPolicy: Always                 # Always pull the image (ensures the latest tag is updated)
+    resources:                         # Resource requests and limits for the operator pod
       requests:
-        cpu: "100m"
-        memory: 128Mi
-        ephemeral-storage: 50Mi
+        cpu: "100m"                    # Guaranteed minimum CPU
+        memory: 128Mi                  # Guaranteed minimum memory
+        ephemeral-storage: 50Mi        # Guaranteed ephemeral storage
       limits:
-        cpu: "250m"
-        memory: 1Gi
-        ephemeral-storage: 512Mi
-  installMode: OwnNamespace
+        cpu: "250m"                    # Maximum CPU
+        memory: 1Gi                    # Maximum memory
+        ephemeral-storage: 512Mi       # Maximum ephemeral storage
+  installMode: OwnNamespace            # Operator watches only its own namespace (not cluster-wide)
   imagePullSecrets:
-    - ibm-entitlement-key
-  privateRegistry: ""
+    - ibm-entitlement-key              # Secret containing IBM entitlement key for pulling licensed images
+  privateRegistry: ""                  # Optional private registry override (empty here)

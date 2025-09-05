@@ -1,10 +1,10 @@
 spec:
-  strategy:
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
-  template:
+  strategy:                          # Defines how updates to pods in this deployment/statefulset/daemonset are performed
+    rollingUpdate:                   # Strategy type is rolling updates (gradual replacement of pods)
+      maxSurge: 0                    # No extra pods will be scheduled above the desired replica count during update
+      maxUnavailable: 1              # At most 1 pod can be unavailable during the update
+  template:                          # Pod template spec (defines how pods should be created)
     spec:
-      securityContext:
-        runAsUser: 1000
-        fsGroup: 1001
+      securityContext:               # Default security context applied to all containers in the pod
+        runAsUser: 1000              # All processes in the pod run as user ID 1000
+        fsGroup: 1001                # Mounted volumes’ files will be owned by group ID 1001

@@ -1,12 +1,12 @@
-apiVersion: cert-manager.io/v1
-kind: Certificate
+apiVersion: cert-manager.io/v1            # API group and version for cert-manager resources
+kind: Certificate                         # Defines a Certificate resource managed by cert-manager
 metadata:
-  name: ace-dashboard-tls
-  namespace: ace-demo
+  name: ace-dashboard-tls                 # Name of the Certificate resource
+  namespace: ace-demo                     # Namespace where the Certificate and Secret will be created
 spec:
-  secretName: ace-dashboard-tls
-  issuerRef:
-    kind: ClusterIssuer
-    name: selfsigned-issuer   # or your CA
-  dnsNames:
-    - ace-dashboard.local
+  secretName: ace-dashboard-tls           # Secret where the TLS cert and private key will be stored
+  issuerRef:                              # Reference to the issuer that will sign the certificate
+    kind: ClusterIssuer                   # Type of issuer (ClusterIssuer is cluster-wide, Issuer is namespaced)
+    name: selfsigned-issuer               # Name of the issuer to use (could also be a CA or ACME issuer)
+  dnsNames:                               # DNS names that this certificate will be valid for
+    - ace-dashboard.local                 # Hostname for the ACE Dashboard ingress

@@ -1,27 +1,28 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ace-dashboard-ui
-  namespace: ace-demo
+  name: ace-dashboard-ui                # Name of the Service exposing the Dashboard UI
+  namespace: ace-demo                   # Namespace where the Service is created
 spec:
-  selector:
+  selector:                             # Labels used to select the target pods
     app.kubernetes.io/instance: ace-dashboard
     app.kubernetes.io/name: ace-dashboard
   ports:
-  - name: ui-https
-    port: 8300
-    targetPort: 8300
+    - name: ui-https                      # Logical name for this port mapping
+      port: 8300                          # Service port exposed inside the cluster
+      targetPort: 8300                    # Pod/container port the service forwards to
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: ace-dashboard-api
+  name: ace-dashboard-api               # Name of the Service exposing the Dashboard API
   namespace: ace-demo
 spec:
   selector:
     app.kubernetes.io/instance: ace-dashboard
     app.kubernetes.io/name: ace-dashboard
   ports:
-  - name: api-https
-    port: 8400
-    targetPort: 8400
+    - name: api-https                     # Logical name for the API port mapping
+      port: 8400                          # Service port exposed inside the cluster
+      targetPort: 8400                    # Pod/container port for the API

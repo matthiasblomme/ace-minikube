@@ -1,8 +1,8 @@
-apiVersion: operators.coreos.com/v1
-kind: OperatorGroup
+apiVersion: operators.coreos.com/v1   # API group and version for OperatorGroup resources
+kind: OperatorGroup                   # Defines a Kubernetes OperatorGroup resource
 metadata:
-  name: ace-operator-group
-  namespace: ace-demo-olm
+  name: ace-operator-group            # Name of the OperatorGroup (must be unique within the namespace)
+  namespace: ace-demo-olm             # Namespace where this OperatorGroup is created
 spec:
-  targetNamespaces:
-    - ace-demo-olm
+  targetNamespaces:                   # List of namespaces where Operators in this group can be installed
+    - ace-demo-olm                    # In this case, the Operator will watch and manage resources only in the 'ace-demo-olm' namespace

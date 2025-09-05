@@ -1,20 +1,21 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: networking.k8s.io/v1        # API group and version for Ingress resources
+kind: Ingress                           # Defines an Ingress resource
 metadata:
-  name: ir01-ing
-  namespace: ace-demo
+  name: ir01-ing                        # Name of this Ingress
+  namespace: ace-demo                   # Namespace where the Ingress is created
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"   # use "HTTPS" if you point to 7843 instead
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"   # Protocol between ingress and backend service
+    # Change to "HTTPS" if pointing to port 7843 instead of 7800
 spec:
-  ingressClassName: nginx
-  rules:
-  - host: ir01.local
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: ir-01-quickstart-ir
-            port:
-              number: 7800            # or 7843 if you want HTTPS to the pod
+  ingressClassName: nginx               # Specifies the ingress controller (nginx in this case)
+  rules:                                # Routing rules
+    - host: ir01.local                    # Hostname for which this rule applies
+      http:
+        paths:
+          - path: /                         # Path prefix to match (all traffic under "/")
+            pathType: Prefix
+            backend:
+              service:                      # Backend service to forward traffic to
+                name: ir-01-quickstart-ir   # Service name exposing the integration runtime
+                port:
+                  number: 7800              # Service port; use 7843 if you want HTTPS traffic to the pod

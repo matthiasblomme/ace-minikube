@@ -1,23 +1,23 @@
-apiVersion: appconnect.ibm.com/v1beta1
-kind: Dashboard
+apiVersion: appconnect.ibm.com/v1beta1       # API group and version for IBM App Connect Enterprise Dashboard CRD
+kind: Dashboard                              # Defines an ACE Dashboard resource
 metadata:
-  name: ace-dashboard
-  namespace: ace-demo
+  name: ace-dashboard                        # Name of the Dashboard instance
+  namespace: ace-demo                        # Namespace where the Dashboard will be created
 spec:
-  license:
-    accept: true
-    license: L-KPRV-AUG9NC
-    use: AppConnectEnterpriseNonProductionFREE
-  pod:
+  license:                                   # Licensing information (mandatory for IBM products)
+    accept: true                             # Must be 'true' to indicate license acceptance
+    license: L-KPRV-AUG9NC                   # IBM license identifier (specific to App Connect)
+    use: AppConnectEnterpriseNonProductionFREE  # Usage type (here, free non-production license)
+  pod:                                       # Pod-level configurations for dashboard components
     containers:
-      content-server:
-        resources:
+      content-server:                        # Container handling static content
+        resources:                           # Resource requests and limits for the container
           limits:
-            memory: 512Mi
+            memory: 512Mi                    # Max memory usage
           requests:
-            cpu: 50m
-            memory: 50Mi
-      control-ui:
+            cpu: 50m                         # Reserved CPU
+            memory: 50Mi                     # Reserved memory
+      control-ui:                            # Container for the control UI
         resources:
           limits:
             memory: 512Mi
@@ -25,18 +25,18 @@ spec:
             cpu: 50m
             memory: 125Mi
   switchServer:
-    name: default
-  authentication:
+    name: default                            # Name of the switch server (default unless customized)
+  authentication:                            # Authentication configuration
     integrationKeycloak:
-      enabled: false
-  authorization:
+      enabled: false                         # Keycloak integration disabled (set true to enable)
+  authorization:                             # Authorization configuration
     integrationKeycloak:
-      enabled: false
+      enabled: false                         # Keycloak authorization disabled (set true to enable)
   api:
-    enabled: true
+    enabled: true                            # Enables the ACE Dashboard API
   storage:
-    type: persistent-claim
-    claimName: ace-dashboard-content
-  displayMode: IntegrationRuntimes
-  replicas: 1
-  version: '13.0'
+    type: persistent-claim                   # Storage type (persistent volume claim for stateful data)
+    claimName: ace-dashboard-content         # Name of the PVC to use for dashboard content
+  displayMode: IntegrationRuntimes           # Display mode of the dashboard (focuses on runtimes)
+  replicas: 1                                # Number of dashboard replicas (for HA, increase this)
+  version: '13.0'                            # ACE Dashboard version to deploy

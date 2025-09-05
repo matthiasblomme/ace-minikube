@@ -1,11 +1,11 @@
-apiVersion: operators.coreos.com/v1alpha1
-kind: Subscription
+apiVersion: operators.coreos.com/v1alpha1   # API group and version for Subscription resources
+kind: Subscription                          # Defines a Subscription resource (tells OLM to install/track an Operator)
 metadata:
-  name: ibm-appconnect-sub
-  namespace: ace-demo-olm
+  name: ibm-appconnect-sub                  # Name of this Subscription (must be unique within the namespace)
+  namespace: ace-demo-olm                   # Namespace where the Subscription is created (and where the Operator will be installed)
 spec:
-  channel: cd                      # pick from .status.channels (e.g., v13 or stable)
-  name: ibm-appconnect              # package name from the catalog
-  source: ibm-operator-catalog      # must match your CatalogSource.metadata.name
-  sourceNamespace: olm              # namespace where the CatalogSource lives
-  installPlanApproval: Automatic    # or Manual if you want to approve upgrades
+  channel: cd                               # Update channel to follow (e.g., 'v13', 'stable', or 'cd' for continuous delivery); defines which versions OLM tracks
+  name: ibm-appconnect                      # Package name of the Operator, as defined in the catalog index
+  source: ibm-operator-catalog              # Name of the CatalogSource that provides this Operator (must match metadata.name of CatalogSource)
+  sourceNamespace: olm                      # Namespace where the CatalogSource is deployed (commonly 'olm' or 'openshift-marketplace')
+  installPlanApproval: Automatic            # How Operator upgrades are handled: 'Automatic' means OLM upgrades without intervention, 'Manual' requires approval

@@ -1,6 +1,6 @@
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
+apiVersion: cert-manager.io/v1     # API group and version for cert-manager resources
+kind: ClusterIssuer                # A ClusterIssuer issues certificates cluster-wide (not namespace-bound)
 metadata:
-  name: selfsigned-issuer
+  name: selfsigned-issuer          # Name of this ClusterIssuer (must be unique in the cluster)
 spec:
-  selfSigned: {}
+  selfSigned: {}                   # Use the built-in self-signed certificate issuer

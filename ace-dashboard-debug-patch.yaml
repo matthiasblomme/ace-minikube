@@ -2,11 +2,14 @@ spec:
   pod:
     containers:
       control-ui:
-        image: "cp.icr.io/cp/appc/acecc-dashboard-prod:TS019983934-debug-20250901-160233"
+        image: "cp.icr.io/cp/appc/acecc-dashboard-prod:XXX"
+        # Custom container image for the ACE Dashboard control-ui component
+        # Hosted in IBM’s entitled registry (cp.icr.io)
+        # This tag looks like a debug build with timestamp/versioning info
         resources:
           limits:
-            memory: 512Mi
+            memory: 512Mi          # Maximum memory allowed for this container
           requests:
-            cpu: 50m
-            memory: 125Mi
-  logLevel: debug
+            cpu: 50m               # Reserved CPU (very lightweight footprint)
+            memory: 125Mi          # Reserved memory
+  logLevel: debug                  # Sets the dashboard logging verbosity level (debug, info, warn, error)
