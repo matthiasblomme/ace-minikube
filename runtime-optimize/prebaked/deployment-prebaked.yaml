@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ace-prebaked
+  namespace: default
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: ace-prebaked } }
+  template:
+    metadata: { labels: { app: ace-prebaked } }
+    spec:
+      containers:
+        - name: runtime
+          image: m/ace-prebaked:dev
+          imagePullPolicy: IfNotPresent
+          env: [ { name: LICENSE, value: "accept" } ]
+          # Optional: expose admin REST or your flow port(s)
+          ports:
+            - containerPort: 7600
+              name: admin
+            - containerPort: 7800
+              name: http
+          readinessProbe:
+            tcpSocket: { port: admin }   # simple + works out of the box
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            failureThreshold: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ace-prebaked
+spec:
+  selector: { app: ace-prebaked }
+  ports:
+    - name: admin
+      port: 7600
+      targetPort: 7600
+    - name: http
+      port: 7800
+      targetPort: 7800

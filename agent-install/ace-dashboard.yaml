@@ -14,9 +14,9 @@ spec:
         resources:                           # Resource requests and limits for the container
           limits:
             memory: 512Mi                    # Max memory usage
-          requests:
-            cpu: 50m                         # Reserved CPU
-            memory: 50Mi                     # Reserved memory
+            requests:
+              cpu: 50m                         # Reserved CPU
+              memory: 50Mi                     # Reserved memory
       control-ui:                            # Container for the control UI
         resources:
           limits:

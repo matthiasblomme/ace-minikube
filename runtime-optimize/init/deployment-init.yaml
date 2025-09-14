@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ace-init-warm
+  namespace: default
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: ace-init-warm } }
+  template:
+    metadata: { labels: { app: ace-init-warm } }
+    spec:
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: server-work
+          emptyDir: {}   # shared ephemeral runtime dir
+      initContainers:
+        - name: prewarm
+          image: m/ace-with-bars:dev     # built from Dockerfile.init
+          imagePullPolicy: IfNotPresent
+          env: [ { name: LICENSE, value: "accept" }, { name: WORKDIR, value: "/home/aceuser/ace-server" } ]
+          command: ["/usr/local/bin/warmup.sh"]
+          volumeMounts:
+            - { name: server-work, mountPath: /home/aceuser/ace-server }
+          resources:
+            requests: { cpu: "2", memory: "1Gi" }
+            limits:   { cpu: "4", memory: "2Gi" }
+      containers:
+        - name: runtime
+          image: m/ace-with-bars:dev     # same ACE level as init; safe & simple
+          env: [ { name: LICENSE, value: "accept" } ]
+          args: ["IntegrationServer","--work-dir","/home/aceuser/ace-server"]
+          volumeMounts:
+            - { name: server-work, mountPath: /home/aceuser/ace-server }
+          ports:
+            - { containerPort: 7600, name: admin }
+            - { containerPort: 7800, name: http }
+          readinessProbe:
+            tcpSocket: { port: admin }
+            initialDelaySeconds: 2
+            periodSeconds: 3
+            failureThreshold: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ace-init-warm
+spec:
+  selector: { app: ace-init-warm }
+  ports:
+    - { name: admin, port: 7600, targetPort: 7600 }
+    - { name: http,  port: 7800, targetPort: 7800 }
