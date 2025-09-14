@@ -1,34 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ace-init-warm
-  namespace: default
+  name: ace-init-prep
 spec:
   replicas: 1
-  selector: { matchLabels: { app: ace-init-warm } }
+  selector:
+    matchLabels: { app: ace-init-prep }
   template:
-    metadata: { labels: { app: ace-init-warm } }
+    metadata:
+      labels: { app: ace-init-prep }
     spec:
       terminationGracePeriodSeconds: 30
       volumes:
         - name: server-work
-          emptyDir: {}   # shared ephemeral runtime dir
+          emptyDir: {}
       initContainers:
-        - name: prewarm
-          image: m/ace-with-bars:dev     # built from Dockerfile.init
+        - name: prep
+          image: ace-init:13.0.4.0
           imagePullPolicy: IfNotPresent
-          env: [ { name: LICENSE, value: "accept" }, { name: WORKDIR, value: "/home/aceuser/ace-server" } ]
-          command: ["/usr/local/bin/warmup.sh"]
+          env: [{ name: LICENSE, value: "accept" }]
           volumeMounts:
             - { name: server-work, mountPath: /home/aceuser/ace-server }
+          command: ["/bin/bash","-lc"]
+          args: ["/scripts/warmup.sh"]
           resources:
-            requests: { cpu: "2", memory: "1Gi" }
-            limits:   { cpu: "4", memory: "2Gi" }
+            requests:
+              cpu: "150m"
+              memory: "750Mi"
       containers:
         - name: runtime
-          image: m/ace-with-bars:dev     # same ACE level as init; safe & simple
-          env: [ { name: LICENSE, value: "accept" } ]
-          args: ["IntegrationServer","--work-dir","/home/aceuser/ace-server"]
+          image: ace-init:13.0.4.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - { name: LICENSE, value: "accept" }
+            - { name: ACE_SERVER_NAME, value: "ace-server" }
           volumeMounts:
             - { name: server-work, mountPath: /home/aceuser/ace-server }
           ports:
@@ -36,16 +41,20 @@ spec:
             - { containerPort: 7800, name: http }
           readinessProbe:
             tcpSocket: { port: admin }
-            initialDelaySeconds: 2
+            initialDelaySeconds: 3
             periodSeconds: 3
             failureThreshold: 30
+          resources:
+            requests:
+              cpu: "150m"
+              memory: "750Mi"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: ace-init-warm
+  name: ace-init-prep
 spec:
-  selector: { app: ace-init-warm }
+  selector: { app: ace-init-prep }
   ports:
     - { name: admin, port: 7600, targetPort: 7600 }
     - { name: http,  port: 7800, targetPort: 7800 }

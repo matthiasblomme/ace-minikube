@@ -1,0 +1,11 @@
+# 1) get pod name
+kubectl get pods -l app=ace-init-prep -o name
+
+# 2) show the init-container ("prep") logs
+kubectl logs <pod-name> -c prep
+
+# (optional) save to a file
+kubectl logs <pod-name> -c prep > prep.log
+
+# get prewarmup log
+kubectl exec -it <pod-name> -c runtime -- bash -lc 'tail -n +1 /home/aceuser/ace-server/prewarm.log'
